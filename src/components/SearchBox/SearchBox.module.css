@@ -14,11 +14,7 @@
     border-color: #14a420;
         outline: none;
 }
-.cntSeaech {
-    position: fixed;
-        top: 27px;
-        right: 286px;
-}
+
 .text {
     font-weight: 700;
     margin-bottom: 5px;
