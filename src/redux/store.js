@@ -1,32 +1,34 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, createTransform } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import contactsReducer from './contactsSlice'; 
-import filterReducer from './filtersSlice'; 
-
-// Преобразователь для игнорирования несерийных данных
-const transform = createTransform(
-  (inboundState, key) => inboundState,
-  (outboundState, key) => outboundState,
-  { whitelist: ['contacts', 'filter'] } // Примените к нужным слайсам
-);
+import { combineReducers } from 'redux';
+import contactsReducer from './contactsSlice';
+import filtersReducer from './filtersSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [transform],
-  whitelist: ['contacts', 'filter'] // Список слайсов для сохранения
+  whitelist: ['contacts'] 
 };
 
-const rootReducer = {
+
+const rootReducer = combineReducers({
   contacts: contactsReducer,
-  filter: filterReducer,
-};
+  filters: filtersReducer,
+});
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
+ 
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, 
+    }),
 });
 
-export const persistor = persistStore(store);
+const persistor = persistStore(store);
+
+export { store, persistor };

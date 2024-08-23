@@ -1,10 +1,9 @@
-
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { addContact } from '../../redux/contactsSlice';
-import css from './ContactForm.module.css';
-import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import css from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -19,11 +18,6 @@ const validationSchema = Yup.object({
     .max(15, 'Too Long! Max 15'),
 });
 
-const initialValues = {
-  name: '',
-  number: '',
-};
-
 const ContactForm = () => {
   const dispatch = useDispatch();
 
@@ -35,7 +29,7 @@ const ContactForm = () => {
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ name: '', number: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
@@ -43,22 +37,12 @@ const ContactForm = () => {
         <Form className={css.Form}>
           <div className={css.cntInp}>
             <label className={css.text} htmlFor="name">Name</label>
-            <Field className={css.input}
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Monica Bellucci"
-            />
+            <Field className={css.input} type="text" id="name" name="name" placeholder="Monica Bellucci" />
             <ErrorMessage className={css.error} name="name" component="span" />
           </div>
           <div className={css.cntInp}>
             <label className={css.text} htmlFor="number">Number</label>
-            <Field className={css.input}
-              type="text"
-              id="number"
-              name="number"
-              placeholder="999-99-99"
-            />
+            <Field className={css.input} type="text" id="number" name="number" placeholder="999-99-99" />
             <ErrorMessage className={css.error} name="number" component="span" />
           </div>
           <button className={css.addBtn} type="submit">Add Contact</button>
